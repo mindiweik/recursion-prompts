@@ -88,40 +88,138 @@ var range = function(x, y) {
   }
 };
 
-// 7. Compute the exponent of a number.
-// The exponent of a number says how many times the base number is used as a factor.
-// 8^2 = 8 x 8 = 64. Here, 8 is the base and 2 is the exponent.
-// exponent(4,3); // 64
-// https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
 var exponent = function(base, exp) {
+  var expIsNegative = false;
+  var expIsEven = false;
+  var total = base;
+
+  if (exp === 0) {
+    return 1;
+  } else if (exp === 1) {
+    return base;
+  }
+
+  if (exp < 0) {
+    expIsNegative = true;
+    exp *= -1;
+  }
+
+  if (exp % 2 === 0) {
+    expIsEven = true;
+  }
+
+  if (exp === 2) {
+    total *= base;(expIsEven)
+  } else if (expIsEven) {
+    total = exponent(base, exp / 2) ** 2;
+  } else {
+    total *= exponent(base, exp - 1);
+  }
+
+  if (expIsNegative) {
+    total = 1 / total;
+  }
+
+  return total;
 };
 
-// 8. Determine if a number is a power of two.
-// powerOfTwo(1); // true
-// powerOfTwo(16); // true
-// powerOfTwo(10); // false
 var powerOfTwo = function(n) {
+ if (n === 1 || n === 2) {
+    return true;
+  } else if (n / 2 < 2) {
+    return false;
+  } else {
+    return powerOfTwo(n / 2);
+  }
 };
 
-// 9. Write a function that reverses a string.
 var reverse = function(string) {
+  var resultStr = "";
+  if (string.length === 0) {
+    return resultStr;
+  }
+
+  if (string.length === 1) {
+    return string[0];
+  } else {
+    return resultStr += reverse(string.slice(1)) + string[0];
+  }
 };
 
-// 10. Write a function that determines if a string is a palindrome.
 var palindrome = function(string) {
+  var resultStr = string.replace(" ", "");
+  resultStr = resultStr.toLowerCase();
+
+  if (resultStr.length === 0) {
+    return false;
+  }
+  if (resultStr.length === 1) {
+    return true;
+  }
+  if (resultStr.length === 2 && resultStr[0] === resultStr[resultStr.length - 1]) {
+    return true;
+  }
+
+  if (resultStr[0] === resultStr[resultStr.length - 1]) {
+    return palindrome(resultStr.slice(1, resultStr.length - 1));
+  } else {
+    return false;
+  }
 };
 
-// 11. Write a function that returns the remainder of x divided by y without using the
-// modulo (%) operator.
-// modulo(5,2) // 1
-// modulo(17,5) // 2
-// modulo(22,6) // 4
 var modulo = function(x, y) {
+  if (y === 0) {
+    return NaN;
+  }
+  if (x < 0) {
+    return -modulo(-x, y);
+  }
+  if (y < 0) {
+    return modulo(x, -y);
+  }
+  if (x < y) {
+    return x;
+  } else {
+    return modulo(x - y, y);
+  }
 };
 
-// 12. Write a function that multiplies two numbers without using the * operator or
-// Math methods.
 var multiply = function(x, y) {
+  var negativeResult = false;
+  if (x === 0 || y === 0) {
+    return 0;
+  }
+  if (x === 1) {
+    return y;
+  }
+  if (y === 1) {
+    return x;
+  }
+  if (x === -1) {
+    return -y;
+  }
+  if (y === -1) {
+    return -x;
+  }
+
+  if (x < 0 && y < 0) {
+    x = -x;
+    y = -y;
+  }
+  if (x < 0 && y > 0) {
+    negativeResult = true;
+    x = -x;
+  }
+  if (x > 0 && y < 0) {
+    negativeResult = true;
+    y = -y;
+  }
+
+  if (x > 1 && !negativeResult) {
+    return y + multiply(x - 1, y);
+  } else if (x > 1 && negativeResult) {
+    return -(y + multiply(x - 1, y));
+  }
 };
 
 // 13. Write a function that divides two numbers without using the / operator or
